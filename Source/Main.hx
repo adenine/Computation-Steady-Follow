@@ -2,6 +2,7 @@ package;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
+import openfl.display.Shape;
 
 /*
  *  COMPUTATION - Steady Follow Example
@@ -23,73 +24,53 @@ class Main extends Sprite {
 	var posY:Float;
 	var moveX:Float;
 	var moveY:Float;
-
+  var delay:Float;
 
 	public function new () {
 		
 		super ();
-		
-    initialize ();
-    construct ();
+		setup ();
+
+    delay = 2;
     
-    resize (stage.stageWidth, stage.stageHeight);
-    this.addEventListener (Event.RESIZE, stage_onResize);
-    this.addEventListener (Event.ENTER_FRAME, update);
-
-
-//   if (c < speed) {
-//     posX = mouseX;
-//     posY = mouseY;
-//   } else {
-//     float rads = atan2(b,a);
-//     posX += cos(rads) * speed;
-//     posY += sin(rads) * speed;
-//   }
-
-//   rectMode(CENTER); // this sets the reference point to the center of the rectangle
-//   rect(posX, posY, 10, 10);
-//   line(mouseX, mouseY, posX, posY);
-//   ellipse(posX, mouseY, 5, 5);
-//   ellipse(mouseX, posY, 5, 5);
-		
+    this.addEventListener( flash.events.MouseEvent.MOUSE_MOVE, onmousemove );
+    this.addEventListener (Event.ENTER_FRAME, draw);
 		
 	}
 	
-  private function construct ():Void {
-
-  }
+  // App functions
 	
-  private function initialize ():Void {
-
+  private function setup ():Void {
+    posX = 100; //set a start position for the tiny rectangle
+    posY = 100;
   }
 
-  private function resize (newWidth:Int, newHeight:Int):Void {
-
-  }
-
-  private function stage_onResize (event:Event):Void {
-    
-    resize (stage.stageWidth, stage.stageHeight);
-    
-  }
-
-  private function update (event:Event):Void {
-    //trace("we are now running");
-
-    //var a:Float =  event.target.stage.mouseX - posX;
-    //var b:Float =  event.target.stage.mouseY - posY;
-
-    //var c:Float = Math.sqrt((a*a)+(b*b));
-    draw();
-  }
-
-  private function draw () {
+  private function draw (e:Event):Void {
     this.graphics.clear();
-    this.graphics.beginFill(0x339933);
-    this.graphics.drawEllipse(10,10,100,100);
-    this.graphics.endFill();
 
+    //trace(openfl.display.Stage.posX);
+
+    var myShape:Shape = new Shape();
+    myShape.graphics.beginFill(0x339933);
+    myShape.graphics.drawEllipse(posX,posY,10,10);
+    myShape.graphics.endFill();
+    this.addChild(myShape);
   }
+
+  // Event Handling
+  function onmousemove(e:MouseEvent) {
+      //system.pos.setTo(e.stageX, e.stageY);
+      trace(e.stageX);
+
+      moveX = (e.stageX - posX) / delay;
+      moveY = (e.stageY - posY) / delay;
+      
+      // move along that segment
+      posX = posX + moveX;
+      posY = posY + moveY;
+      //trace("Updated position ");
+  }
+
 }
 
 

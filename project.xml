@@ -5,6 +5,7 @@
 	<app main="Main" path="Export" file="ComputationSteadyFollow" />
 	
 	<source path="Source" />
+	<window width="600" height="600" unless="mobile" />
 	
 	<haxelib name="openfl" />
 	
